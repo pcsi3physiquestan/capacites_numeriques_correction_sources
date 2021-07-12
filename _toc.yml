@@ -1,0 +1,12 @@
+# In _toc.yml
+- file: capacite_numerique_c
+  numbered: true
+
+- chapters:
+  - file: signal_fourier_correction.md
+  - file: elec_reponse_o1_correction.md
+  - file: elec_filtrage_correction.md
+  - file: meca_non_lineaire_correction.md
+  - file: meca_pendule_correction.md
+  - file: meca_force_centrale_correction.md
+  - file: thermo_statique_correction.md
