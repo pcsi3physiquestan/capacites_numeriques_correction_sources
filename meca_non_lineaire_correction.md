@@ -222,7 +222,7 @@ Le but est d'observer les vibrations de la molécule autour de sa position d'éq
 * une vibration de très faible amplitude : $(r - r_E) < 0.01 r_E$
 * une vibration plus importante : $(r - r_E) < 0.2 r_E$
 
-On cherchera à observer par les tracés temporelles et le portrait de phase si l'approximation linéaire de l'équation pourrait être valable et quelle sont les effets de non linéarité.
+On cherchera à observer par les tracés temporelles et le portrait de phase (tracé des points $(r(t), \frac{\rm{d}r}{\rm{dt}}(t))$) si l'approximation linéaire de l'équation pourrait être valable et quelle sont les effets de non linéarité. _Note : pour un oscillateur harmonique, on attend une ellipse pour le portrait de phase__.
 
 Vous devez :
 1. Définir une fonction `Ec(v)` qui renvoient l'énergie cinétique du système pour une vitesse donnée.
