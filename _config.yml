@@ -73,7 +73,8 @@ launch_buttons:
 #  jupyterhub_url            : ""  # The URL of the JupyterHub (e.g., https://datahub.berkeley.edu)
 
 repository:
- url                       : https://github.com/pcsi3physiquestan/corriges_source  # The URL to your book's repository
+ url                       : https://github.com/pcsi3physiquestan/
+capacites_numeriques_correction_sources   # The URL to your book's repository
  path_to_book              : ""  # A path to your book's folder, relative to the repository root.
  branch                    : main  # Which branch of the repository should be used when creating links
 
