@@ -71,7 +71,6 @@ def eval_fft(s, fe):
     freqs = np.arange(int(N / 2)) * fe / N  # Liste de fréquence
     sk = fft(s) / N  # Calcul de la TF
     return freqs, np.abs(sk)[:int(N/2)] * 2, np.angle(sk)[:int(N/2)]
-
 ```
 
 ## Position du problème
@@ -282,10 +281,26 @@ __Exercice 3:__
 """Détermination de la fréquence de coupure"""
 f1 = 1500
 f2 = 2500
-fc = f1  # Initialisation
-pas = 10  # On choisit un pas de 10Hz, ce sera déjà suffisant pour tester la fréquence fc.
-while np.abs(butterworth(f1, fc, nmin)) < 0.9:
-    fc = fc + pas
+f01 = 1500
+f02 = 2500
+f0c = (f01 + f02) / 2  # Initialisation
+ecart = (f02 - f01)
+prec = 1e-1
+while ecart > prec:
+    G1 = np.abs(butterworth(f1, f01, nmin)) - 0.9
+    G2 = np.abs(butterworth(f1, f02, nmin)) - 0.9
+    Gc = np.abs(butterworth(f1, f0c, nmin)) - 0.9
+    if Gc == 0:
+        f1, f2 = f0c, f0c
+    elif G1 * Gc < 0:
+        f02 = f0c
+        f0c = (f01 + f02) / 2
+    else:
+        f01 = f0c
+        f0c = (f01 + f02) / 2
+    ecart = (f02 - f01)
+
+fc = f0c
 
 
 print('--------------')

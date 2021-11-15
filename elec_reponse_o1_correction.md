@@ -135,9 +135,9 @@ def sol_echelon(t, t1, y0):  # Echelon, solution analytique
     return (y0 - 1) * np.exp(- (t - t1) / tau) + 1
 
 
-pas = tau / 1000  # pas d'intégration
+pas = tau / 0.5  # pas d'intégration
 
-t_libre, num_libre = euler(f_libre, pas, 0, 5 * tau, 1)  # Intégration numérique du régime libre
+t_libre, num_libre = euler(f_libre, pas, 0, 20 * tau, 1)  # Intégration numérique du régime libre
 ana_libre = sol_libre(t_libre, 0, 1)  # Solution analytique du régime libre
 
 fl, axl = plt.subplots()  # Création de la fenêtre et des axes
@@ -159,7 +159,7 @@ axe.set_xlabel('t (s)')  # Légende des abscisses
 axe.set_ylabel('u(t) (V)')  # Légende des ordonnées
 
 axe.plot(t_echelon, num_echelon, label="Euler", color='red')  # Tracé de la solution numérique
-axe.plot(t_echelon, ana_echelon, label="Analytique", color='blue')  # Tracé de la solution analytique
+axe.plot(t_echelon, ana_echelon, label="Analytique", color='blue', alpha=0.2)  # Tracé de la solution analytique
 axe.legend()
 axe.grid()
 
