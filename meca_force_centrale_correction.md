@@ -43,8 +43,8 @@ Comme dans le cas de l'étude de la vibration moléculaire, on va se placer dans
 Dans ces conditions, les données numériques utiles deviennent :
 * Masse des particules alpha : $m = 4 (UA)$
 * Energie cinétique initiale $E_{c0} = 5.3 \times 10^6 (UA)$ (cette valeur sera susceptible de changer ensuite).
-* Constante ${e^2 \over 4 \pi \epsilon_0} = 1.44 \times 10^6 (UA)$
-* un pas de temps de $h = 1(UA)$ correspondra à $7.9 \times 10^{-20} s$
+* Constante ${e^2 \over 4 \pi \epsilon_0} = 1.4 \times 10^4 (UA)$
+* un pas de temps de $h = 1(UA)$ correspondra à $1.0 \times 10^{-18} s$
 
 ### Mise en équation
 Il s'agit d'un problème classique de force centrale coulombienne, la conservation du moment cinétique et le principe fondamental de la dynamique permettent de se ramener à un problème à trois inconnues :
@@ -127,7 +127,7 @@ from scipy.integrate import odeint
 """Données numériques globales"""
 m = 4  # Masse des particules alpha
 Z = 79
-K = 1.44e6  # e^2/(4 pi Epsilon0)
+K = 1.44e4  # e^2/(4 pi Epsilon0)
 K1 = 2 * Z * K
 
 def CI(b, Ec0):

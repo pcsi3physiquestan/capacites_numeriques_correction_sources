@@ -133,7 +133,7 @@ def trace_temp(fs, amps, phis, t1, t2, N):
 
 """Cas du créneau"""
 f0 = 1000  # Fondamental
-m = 10  # Nombre de composantes
+m = 30  # Nombre de composantes
 fs = (2 * np.arange(m) + 1) * f0  # Fréquence
 amps = 4 / (np.pi * (2 * np.arange(m) + 1))  # Amplitudes
 phis = np.ones(m) * (np.pi / 2)  # Phases
