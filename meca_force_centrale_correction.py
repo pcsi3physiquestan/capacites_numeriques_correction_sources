@@ -44,8 +44,8 @@
 # Dans ces conditions, les données numériques utiles deviennent :
 # * Masse des particules alpha : $m = 4 (UA)$
 # * Energie cinétique initiale $E_{c0} = 5.3 \times 10^6 (UA)$ (cette valeur sera susceptible de changer ensuite).
-# * Constante ${e^2 \over 4 \pi \epsilon_0} = 1.44 \times 10^6 (UA)$
-# * un pas de temps de $h = 1(UA)$ correspondra à $7.9 \times 10^{-20} s$
+# * Constante ${e^2 \over 4 \pi \epsilon_0} = 1.4 \times 10^4 (UA)$
+# * un pas de temps de $h = 1(UA)$ correspondra à $1.0 \times 10^{-18} s$
 #
 # ### Mise en équation
 # Il s'agit d'un problème classique de force centrale coulombienne, la conservation du moment cinétique et le principe fondamental de la dynamique permettent de se ramener à un problème à trois inconnues :
@@ -83,6 +83,7 @@
 #
 # ### Conditions initiales
 # Les conditions initiales ne sont pas directement $\theta, r, \dot r$ mais :
+#
 # $$
 # \begin{pmatrix}
 # b \\
@@ -90,6 +91,7 @@
 # Ec(t=0) = E_{c0}
 # \end{pmatrix}
 # $$
+#
 # avec $v_0$ suivant $-\vec e_x$.
 #
 # __Il faudra donc déterminer $\theta, r, \dot r$ à partir de ces contraintes avant de commencer l'intégration.__
@@ -122,7 +124,7 @@ from scipy.integrate import odeint
 """Données numériques globales"""
 m = 4  # Masse des particules alpha
 Z = 79
-K = 1.44e6  # e^2/(4 pi Epsilon0)
+K = 1.44e4  # e^2/(4 pi Epsilon0)
 K1 = 2 * Z * K
 
 def CI(b, Ec0):
@@ -131,6 +133,7 @@ def CI(b, Ec0):
     rmin = K1 / Ec0  # rmin
     k = 1000
     ri = max(k  * rmin, k * b)
+    #print(k * rmin, k * b)
     theta = np.arcsin(b / ri)
     rpoint = -v0 / np.cos(theta)
     return [theta, ri, rpoint]
@@ -179,7 +182,7 @@ def pol_to_cart(r, theta):
 
 
 Np = 16
-bs = np.logspace(-2, 3, Np)  # Valeur des paramètres d'impacts
+bs = np.logspace(-2, 2, Np)  # Valeur des paramètres d'impacts
 Ec0 = 5.3e6  # Ec initiale
 N = 10000
 
@@ -255,7 +258,6 @@ print("----------------")
 
 
 
-
 # -
 # ## Statistique des angles de diffusion
 # En pratique, on n'envoie pas une particule alpha mais un jet uniformément répartie dans le plan $y0z$. Pour un point de départ $(y_0, z_0)$, l'invariance par rotation autour de l'axe Ox permet de conserver l'étude précédente en prenant $b = \sqrt{y_0^2 + z_0^2}$.
@@ -317,8 +319,8 @@ def tir(Ec0, bmax, N, nbins):
     return hist, bins
 
 N = 10000
-bmax = 100
-h, b = tir(Ec0, bmax, N, 100)
+bmax = 10
+h, b = tir(Ec0, bmax, N, 1000)
 J = N / (np.pi * bmax**2)
 db = b[1] - b[0]
 h_th = (beta_th / 2) ** 2 * 1 / (np.sin(b/ 2) ** 4)

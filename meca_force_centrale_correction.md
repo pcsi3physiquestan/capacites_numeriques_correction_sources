@@ -136,6 +136,7 @@ def CI(b, Ec0):
     rmin = K1 / Ec0  # rmin
     k = 1000
     ri = max(k  * rmin, k * b)
+    #print(k * rmin, k * b)
     theta = np.arcsin(b / ri)
     rpoint = -v0 / np.cos(theta)
     return [theta, ri, rpoint]
@@ -182,7 +183,7 @@ def pol_to_cart(r, theta):
 
 
 Np = 16
-bs = np.logspace(-2, 3, Np)  # Valeur des paramètres d'impacts
+bs = np.logspace(-2, 2, Np)  # Valeur des paramètres d'impacts
 Ec0 = 5.3e6  # Ec initiale
 N = 10000
 
@@ -254,7 +255,6 @@ print("Beta théorique : {:.3f}".format(beta_th))
 print("Beta numérique : {:.3f}".format(beta_num))
 print("----------------")
 
-
 ```
 
 ## Statistique des angles de diffusion
@@ -317,8 +317,8 @@ def tir(Ec0, bmax, N, nbins):
     return hist, bins
 
 N = 10000
-bmax = 100
-h, b = tir(Ec0, bmax, N, 100)
+bmax = 10
+h, b = tir(Ec0, bmax, N, 1000)
 J = N / (np.pi * bmax**2)
 db = b[1] - b[0]
 h_th = (beta_th / 2) ** 2 * 1 / (np.sin(b/ 2) ** 4)
