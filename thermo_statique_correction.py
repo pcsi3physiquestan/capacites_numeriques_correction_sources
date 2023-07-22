@@ -212,7 +212,7 @@ plt.show()
 # * On considère le ballon suffisamment petit pour pouvoir supposer la température et la pression uniforme à l'échelle du ballon.
 # * Le volume de la nacelle et des autres éléments seront négligeables devant le volume du ballon.
 #
-# On reviendra sur la troisième hypothèse par la suite. Le gradient de température variant sur des kilomèrte la seconde est plutôt acceptable pour un ballon allant jusqu'à 100m de diamètre (!). La première est relativement acceptable si l'on suppose le ballon à l'équilibre à l'altitude $z$.
+# On reviendra sur la troisième hypothèse par la suite. Le gradient de température variant sur des kilomètres la seconde est plutôt acceptable pour un ballon allant jusqu'à 100m de diamètre (!). La première est relativement acceptable si l'on suppose le ballon à l'équilibre à l'altitude $z$.
 
 # __Détermination théorique du volume :__
 # Le principe fondamental de la dynamique appliqué au ballon à l'équilibre donne suivant l'axe vertical:

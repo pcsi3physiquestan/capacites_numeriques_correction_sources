@@ -59,9 +59,9 @@
 # \end{pmatrix}(t)
 # =
 # \begin{pmatrix}
-# {bv_0 \over r(t)^2} \\
+# {C \over r(t)^2} \\
 # \dot r(t) \\
-# {b^2 v_0^2 \over r(t)^3} + {2Ze^2 \over 4 \pi \epsilon_0 m r(t)^2}
+# {C^2 \over r(t)^3} + {2Ze^2 \over 4 \pi \epsilon_0 m r(t)^2}
 # \end{pmatrix}
 # $$
 #
@@ -76,7 +76,7 @@
 # * `F(Y, t, C)` la fonction telle que $\frac{\rm{d}Y}{\rm{dt}}(t) = F(Y, t, C)$ et $Y = (\theta, r, \dot r)$. `F` doit renvoyer un vecteur. L'argument `C` sera la constante des aires $C = bv_0$. Elle apparaît dans `F` mais variera suivant les conditions initiales.
 # * `Y0` les conditions initiales (vecteur)
 # * `t` vecteur contenant l'ensemble des instants où l'on veut estimer la fonction `Y(t)`
-# * `args = (C,)` permettra de passer à la fonction `F` le troisième argument `C`. On y mettra donc la valeur de la constante des aires. __Attention, les parenthèse et la virgule sont obligatoire.__
+# * `args = (C,)` permettra de passer à la fonction `F` le troisième argument `C`. On y mettra donc la valeur de la constante des aires. __Attention, les parenthèses et la virgule sont obligatoire.__
 # * `Ysol` le tableau renvoyé qui contient les estimations des fonctions (ici $\theta(t), r(t), \dot r(t)$) aux instants du vecteur `t`
 #
 #
@@ -124,18 +124,19 @@ from scipy.integrate import odeint
 """Données numériques globales"""
 m = 4  # Masse des particules alpha
 Z = 79
-K = 1.44e4  # e^2/(4 pi Epsilon0)
+K = 1.44e5  # e^2/(4 pi Epsilon0)
 K1 = 2 * Z * K
 
 def CI(b, Ec0):
     """Calcul des conditions initiales pour un paramètre d'impact donné et une énergie cinétique donnée"""
     v0 = np.sqrt(2 * Ec0 / m)  # Vitesse initiale
     rmin = K1 / Ec0  # rmin
+    #print(rmin)
     k = 1000
     ri = max(k  * rmin, k * b)
     #print(k * rmin, k * b)
     theta = np.arcsin(b / ri)
-    rpoint = -v0 / np.cos(theta)
+    rpoint = -v0 * np.cos(theta)
     return [theta, ri, rpoint]
 
 
@@ -167,7 +168,16 @@ def F(Y, t, C):
     """Fonction F pour le schéma d'Euler"""
     return np.array([C / Y[1] ** 2, Y[2], C ** 2 / Y[1] ** 3 + K1 / (m * Y[1]**2)])
 
+Y0 = [1, 2, 3]
+t = np.linspace(0, 1000, 1000)
+Ysol = odeint(F, Y0, t, args=(1, ))
+print(Ysol)
+print(Ysol.shape)
+#print(Ysol[:,1])
+print(Ysol[:,1].shape)
 
+
+# +
 def deviation(b, Ec0, N):
     Y0 = CI(b, Ec0)  # Condition initiales
     v0 = np.sqrt(2 * Ec0 / m)  # Vitesse initiale
@@ -182,8 +192,8 @@ def pol_to_cart(r, theta):
 
 
 Np = 16
-bs = np.logspace(-2, 2, Np)  # Valeur des paramètres d'impacts
 Ec0 = 5.3e6  # Ec initiale
+bs = np.logspace(-2, 3, Np)  # Valeur des paramètres d'impacts
 N = 10000
 
 f, ax= plt.subplots(figsize=(12, 12))
@@ -191,12 +201,13 @@ f.suptitle("Diffusion de Rutherford - Trajectoire")
 for b in bs:
     t, Y = deviation(b, Ec0, N)  # Intégration numérique
     Yc = pol_to_cart(Y[:, 1], Y[:, 0])  # Passe au cartésien
-    ax.plot(Yc[0], Yc[1], label="{}".format(b))
+    ax.plot(Yc[0], Yc[1], label="{:.2f}".format(b))
 ax.legend()
 plt.show()
 
 
 # -
+
 # ## Paramètre d'impact et diffusion
 # On va étudier la relation entre le paramètre d'impact et l'angle de diffusion ($D$ sur la figure ci-après).
 #
@@ -254,8 +265,6 @@ print("----------------")
 print("Beta théorique : {:.3f}".format(beta_th))
 print("Beta numérique : {:.3f}".format(beta_num))
 print("----------------")
-
-
 
 
 # -
@@ -320,18 +329,19 @@ def tir(Ec0, bmax, N, nbins):
 
 N = 10000
 bmax = 10
-h, b = tir(Ec0, bmax, N, 1000)
+freqDs, Ds = tir(Ec0, bmax, N, 1000)
 J = N / (np.pi * bmax**2)
-db = b[1] - b[0]
-h_th = (beta_th / 2) ** 2 * 1 / (np.sin(b/ 2) ** 4)
+dDs = Ds[1] - Ds[0]
+freqDs_th = (beta_th / 2) ** 2 * 1 / (np.sin(Ds/ 2) ** 4)
 
 
-f, ax = plt.subplots(2, 1, figsize=(12, 6))
+f, ax = plt.subplots(2, 1, figsize=(12, 6), sharex='col')
 f.suptitle("Distribution des valeurs de D et section efficace")
-ax[0].bar(b[:-1], h, 0.02)
-ax[1].bar(b[:-1], h / (J * 2 * np.pi * np.sin(b[:-1]) * db), .02, label="Numérique")
-ax[1].bar(b[:-1], h_th[:-1], .01, label="Théorique")
+ax[0].bar(Ds[:-1], freqDs, 0.02)
+ax[1].bar(Ds[:-1], freqDs / (J * 2 * np.pi * np.sin(Ds[:-1]) * dDs), .02, label="Numérique")
+ax[1].bar(Ds[:-1], freqDs_th[:-1], .01, label="Théorique")
 ax[1].legend()
+ax[1]/set_xlim(0, 0.5)
 plt.show()
 
 

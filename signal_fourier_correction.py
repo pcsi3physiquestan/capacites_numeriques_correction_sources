@@ -9,7 +9,7 @@
 #       format_version: '1.5'
 #       jupytext_version: 1.10.3
 #   kernelspec:
-#     display_name: Python 3
+#     display_name: Python 3 (ipykernel)
 #     language: python
 #     name: python3
 # ---
@@ -112,7 +112,7 @@ def evalue_temp(fs, amps, phis, t1, t2, N):
 
 
 def trace_spec(fs, amps, phis):
-    f, ax = plt.subplots()  # Création de la figure
+    f, ax = plt.subplots(figsize = (12, 8))  # Création de la figure
     f.suptitle("Spectre du signal")  # Titre
     ax.set_xlabel("f(Hz)")  # Légende des x
     ax.set_ylabel("Amplitude(SI)")  # Légende des y

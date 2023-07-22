@@ -9,7 +9,7 @@
 #       format_version: '1.5'
 #       jupytext_version: 1.10.3
 #   kernelspec:
-#     display_name: Python 3
+#     display_name: Python 3 (ipykernel)
 #     language: python
 #     name: python3
 # ---
@@ -110,7 +110,7 @@ def eval_fft(s, fe):
 
 """Les instructions suivantes chargent les données du fichier wav.
 """
-filename = 'sources/signal_bruitee.wav'  # Entrer ici le chemin relatif vers le fichier sonore téléchargé
+filename = 'sources/signal_bruitee_2.wav'  # Entrer ici le chemin relatif vers le fichier sonore téléchargé
 samplerate, datas = read(filename)
 
 print('--------------')
@@ -162,7 +162,7 @@ plt.show()
 # ## Dimensionnement du filtre.
 # On va considérer qu'il convient :
 # * de garder un gain supérieur à $G_1 = 0.9$ au dessous de $f_1 = 1500Hz$.
-# * d'avoir un gain inférieur à $G_2 = 0.1$ au dessus de $f_2 = 2500Hz$.
+# * d'avoir un gain inférieur à $G_2 = 0.05$ au dessus de $f_2 = 2500Hz$.
 #
 # ### Choix du filtre
 # Le filtre que nous allons choisir est un filtre passe-bas dit de Butterworth d'ordre n. Comme expliqué en devoir libre, il a les caractéristiques suivantes :
@@ -261,7 +261,7 @@ def eta(n):
     return (Gf2 ** -2 - 1) / (Gf1 ** -2 - 1)
 
 G1 = 0.9
-G2 = 0.1
+G2 = 0.05
 etamin = (G2 ** -2 - 1) / (G1 ** -2 - 1)
 
 n = 1  # On démarre avec un filtre d'ordre 1
@@ -384,6 +384,7 @@ plt.show()
 # * On a beaucoup atténué les hautes fréquences comme attendu.
 # * Le contenu spectral à basse fréquence semble relativement peut touché.
 
+# %%time
 """Reconstruction des signaux temporels
 On utilise les fonctions données au début. On a besoin de calculer le temps final.
 npt est le nombre du points du signal d'entrée.
@@ -413,8 +414,8 @@ plt.show()
 # On doit normaliser le signal pour que les valeurs soit comprises entre -1 et 1
 # En pratique, on place les valeurs entre -0.5 et 0.5 pour éviter tout risque de saturation
 reponse2 = []
-reponse2.append(s_gauche / np.max(s_gauche) * 0.5)
-reponse2.append(s_droite / np.max(s_droite) * 0.5)
+reponse2.append(s_gauche/ np.max(s_gauche) * 0.5)
+reponse2.append(s_droite/ np.max(s_droite) * 0.5)
 reponse2 = np.array(reponse2)  # La fonction write impose l'utilisation d'un array
 
 
@@ -430,5 +431,12 @@ write(filesortie, samplerate, reponse2.transpose())  # Ecriture du fichier, on d
 # En pratique, le traitement d'un signal numérique se fait par des filtres __numériques__ qui s'applique directement sur le signal temporel échantillonné ($s_k$). Certains de ces filtre seront vus en deuxième année suivant les options. La bibliothèques `scipy` propose notamment plusieurs fonctions natives et optimisées pour le traitement des signaux numériques (sous bibliothèques `scipy.signal`).
 #
 # On ne présente pas ici ces méthodes qui ne sont pas au programme mais sachez qu'on peut notamment utiliser un filtre de Butterworth ou son équivalent numérique grâce à cette bibliothèque.
+
+import IPython
+IPython.display.Audio("./sources/signal_bruitee_2.wav")
+
+IPython.display.Audio("./signal_filtree.wav")
+
+help(write)
 
 
